@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Classroom.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Classroom.Controllers
 {
@@ -17,15 +19,18 @@ namespace Classroom.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ClassroomContext _classroomContext;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, ClassroomContext classroomContext)
         {
             _logger = logger;
+            _classroomContext = classroomContext;
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task<IEnumerable<WeatherForecast>> Get()
         {
+            var a =  _classroomContext.Groups.ToList();
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

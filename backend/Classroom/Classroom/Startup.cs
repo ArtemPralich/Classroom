@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Classroom.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Classroom
 {
@@ -32,6 +34,9 @@ namespace Classroom
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Classroom", Version = "v1" });
             });
+            services.AddDbContext<ClassroomContext>(opts =>
+                opts.UseSqlServer(Configuration.GetConnectionString("sqlConnection")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
