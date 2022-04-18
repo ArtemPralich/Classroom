@@ -2,9 +2,9 @@
 
 namespace Classroom.Entities.Models
 {
-    public partial class Secretary
+    public partial class Secretary : BaseEntity
     {
-        public int Id { get; set; }
+        public override int Id { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
     }

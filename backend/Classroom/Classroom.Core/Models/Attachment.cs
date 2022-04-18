@@ -2,9 +2,9 @@
 
 namespace Classroom.Entities.Models
 {
-    public partial class Attachment
+    public partial class Attachment : BaseEntity
     {
-        public int Id { get; set; }
+        public override int Id { get; set; }
         public string Path { get; set; }
         public string Name { get; set; }
         public int? StudentId { get; set; }

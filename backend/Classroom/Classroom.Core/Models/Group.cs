@@ -4,14 +4,14 @@
 
 namespace Classroom.Entities.Models
 {
-    public partial class Group
+    public partial class Group : BaseEntity
     {
         public Group()
         {
             Students = new HashSet<Student>();
         }
 
-        public int Id { get; set; }
+        public override int Id { get; set; }
         public string Number { get; set; }
         public short? Course { get; set; }
 

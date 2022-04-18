@@ -4,14 +4,14 @@
 
 namespace Classroom.Entities.Models
 {
-    public partial class Task
+    public partial class Task : BaseEntity
     {
         public Task()
         {
             Attachments = new HashSet<Attachment>();
         }
 
-        public int Id { get; set; }
+        public override int Id { get; set; }
         public short? Mark { get; set; }
         public short? Progress { get; set; }
         public int SubjectId { get; set; }
