@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Classroom.BusinessLayer.Common;
+using Classroom.BusinessLayer.Interfaces.Common;
 using Classroom.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,6 +38,7 @@ namespace Classroom
             });
             services.AddDbContext<ClassroomContext>(opts =>
                 opts.UseSqlServer(Configuration.GetConnectionString("sqlConnection")));
+            services.AddScoped<IRepositoryManager, RepositoryManager>();
 
         }
 

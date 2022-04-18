@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Classroom.BusinessLayer\Classroom.BusinessLayer.csproj" />
     <ProjectReference Include="..\Classroom.Core\Classroom.Entities.csproj" />
   </ItemGroup>
 
