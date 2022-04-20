@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
 namespace Classroom.Entities.Models
 {
-    public partial class Teacher : BaseEntity
+    [Table("Teacher")]
+    public partial class Teacher : User
     {
         public Teacher()
         {
             Subjects = new HashSet<Subject>();
         }
 
-        public override int Id { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
+        public override string Id { get; set; }
+        
         public short? Age { get; set; }
 
         public virtual ICollection<Subject> Subjects { get; set; }

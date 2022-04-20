@@ -13,7 +13,7 @@ namespace Classroom.Entities.Models
 
         public override int Id { get; set; }
         public string Title { get; set; }
-        public int TeacherId { get; set; }
+        public string TeacherId { get; set; }
         public short? Year { get; set; }
 
         public virtual Teacher Teacher { get; set; }

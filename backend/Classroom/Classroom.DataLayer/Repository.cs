@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Classroom.Entities;
@@ -8,7 +9,7 @@ using Classroom.Entities.Models;
 
 namespace Classroom.DataLayer
 {
-    public class Repository<T> : IRepository<T> where T : BaseEntity
+    public class Repository<T> : IRepository<T> where T : class
     {
         private ClassroomContext _context { get; set; }
  
@@ -22,9 +23,9 @@ namespace Classroom.DataLayer
             return _context.Set<T>();
         }
 
-        public T Get(int id)
+        public T Get(Expression<Func<T, bool>> expression)
         {
-            return _context.Set<T>().Find(id);
+            return _context.Set<T>().Where(expression).First();
         }
 
         public void Create(T entity)

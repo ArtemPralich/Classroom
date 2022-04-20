@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Classroom.BusinessLayer.Interfaces;
+using Classroom.BusinessLayer.Interfaces.Common;
 using Classroom.Entities;
 
 namespace Classroom.BusinessLayer.Common
 {
-    public class RepositoryManager
+    public class RepositoryManager : IRepositoryManager
     {
         private IAttachmentRepository _attachmentRepository;
         private IGroupRepository _groupRepository;

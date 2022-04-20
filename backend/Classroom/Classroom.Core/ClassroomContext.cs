@@ -1,11 +1,12 @@
 ﻿using Classroom.Entities.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
 namespace Classroom.Entities
 {
-    public partial class ClassroomContext : DbContext
+    public partial class ClassroomContext : IdentityDbContext<User>
     {
         public ClassroomContext()
         {
@@ -35,6 +36,8 @@ namespace Classroom.Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.HasAnnotation("Relational:Collation", "Cyrillic_General_CI_AS");
 
             modelBuilder.Entity<Attachment>(entity =>
@@ -138,6 +141,21 @@ namespace Classroom.Entities
                     .HasMaxLength(20)
                     .IsUnicode(false);
             });
+
+            modelBuilder
+                .Entity<Teacher>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder
+                .Entity<Student>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder
+                .Entity<Secretary>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
 
             OnModelCreatingPartial(modelBuilder);
         }

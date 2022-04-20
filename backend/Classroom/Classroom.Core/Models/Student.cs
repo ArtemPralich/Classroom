@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
 namespace Classroom.Entities.Models
 {
-    public partial class Student : BaseEntity
+    [Table("Student")]
+    public partial class Student : User
     {
         public Student()
         {
             Attachments = new HashSet<Attachment>();
         }
 
-        public override int Id { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
+        public override string Id { get; set; }
         public short? Age { get; set; }
         public int? GroupId { get; set; }
 
