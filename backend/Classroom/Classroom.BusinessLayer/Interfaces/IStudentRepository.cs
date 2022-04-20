@@ -9,6 +9,5 @@ namespace Classroom.BusinessLayer.Interfaces
 {
     public interface IStudentRepository
     {
-        void CreateStudent(Student student);
     }
 }

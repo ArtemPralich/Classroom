@@ -18,7 +18,7 @@ namespace Classroom.DataLayer
             this._context = context;
         }
 
-        public IEnumerable<T> Get()
+        public IEnumerable<T> GetAll()
         {
             return _context.Set<T>();
         }
@@ -31,41 +31,24 @@ namespace Classroom.DataLayer
         public void Create(T entity)
         {
             _context.Set<T>().Add(entity);
+            Save();
         }
 
         public void Update(T entity)
         {
             _context.Set<T>().Update(entity);
+            Save();
         }
 
         public void Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
+            Save();
         }
 
         public void Save()
         {
             _context.SaveChanges();
         }
-
-        //private bool disposed = false;
-
-        //public virtual void Dispose(bool disposing)
-        //{
-        //    if (!this.disposed)
-        //    {
-        //        if (disposing)
-        //        {
-        //            _context.Dispose();
-        //        }
-        //    }
-        //    this.disposed = true;
-        //}
-
-        //public void Dispose()
-        //{
-        //    Dispose(true);
-        //    GC.SuppressFinalize(this);
-        //}
     }
 }

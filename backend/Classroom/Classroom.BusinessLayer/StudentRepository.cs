@@ -16,10 +16,5 @@ namespace Classroom.BusinessLayer
             : base(repositoryContext)
         {
         }
-        public void CreateStudent(Student student)
-        {
-            Create(student);
-            Save();
-        }
     }
 }
