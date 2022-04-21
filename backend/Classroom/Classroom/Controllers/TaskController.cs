@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Classroom.BusinessLayer.Interfaces.Common;
 
 namespace Classroom.Controllers
 {
@@ -11,5 +12,10 @@ namespace Classroom.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
+        private readonly IRepositoryManager _repositoryManager;
+        public TaskController(IRepositoryManager repositoryManager)
+        {
+            _repositoryManager = repositoryManager;
+        }
     }
 }

@@ -18,14 +18,14 @@ namespace Classroom.DataLayer
             this._context = context;
         }
 
-        public IEnumerable<T> GetAll()
+        public IQueryable<T> GetAll()
         {
             return _context.Set<T>();
         }
 
-        public T Get(Expression<Func<T, bool>> expression)
+        public IQueryable<T> Get(Expression<Func<T, bool>> expression)
         {
-            return _context.Set<T>().Where(expression).First();
+            return _context.Set<T>().Where(expression);
         }
 
         public void Create(T entity)

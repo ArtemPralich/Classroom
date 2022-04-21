@@ -17,6 +17,7 @@ namespace Classroom.BusinessLayer.Common
         private IStudentRepository _studentRepository;
         private ITaskRepository _taskRepository;
         private ITeacherRepository _teacherRepository;
+        private ISubjectRepository _subjectRepository;
 
         private readonly ClassroomContext _classroomContext;
 
@@ -64,6 +65,13 @@ namespace Classroom.BusinessLayer.Common
             get
             {
                 return _teacherRepository ?? new TeacherRepository(_classroomContext);
+            }
+        }
+        public ISubjectRepository Subject
+        {
+            get
+            {
+                return _subjectRepository ?? new SubjectRepository(_classroomContext);
             }
         }
     }

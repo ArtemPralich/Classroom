@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Classroom.Entities.Models;
+using Classroom.Entities.RequestFeatures;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Classroom.BusinessLayer.Interfaces.Common;
 
 namespace Classroom.Controllers
 {
@@ -11,5 +12,10 @@ namespace Classroom.Controllers
     [ApiController]
     public class SecretaryController : ControllerBase
     {
+        private readonly IRepositoryManager _repositoryManager;
+        public SecretaryController(IRepositoryManager repositoryManager)
+        {
+            _repositoryManager = repositoryManager;
+        }
     }
 }

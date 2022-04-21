@@ -26,21 +26,21 @@ namespace Classroom.Controllers
         //[ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterUser()
         {
-            var user = new Student()
+            var user = new Teacher()
             {
-                UserName = "qweqwe", Firstname = "qweqwe", Lastname = "asdasd", Email = "rerererer@mail.ru", Id = Guid.NewGuid().ToString(),
+                UserName = "asdasd", Firstname = "qweqwe", Lastname = "asdasd", Email = "rerqwqerer@mail.ru", Id = Guid.NewGuid().ToString(),
                 PhoneNumber = "23232232"
             };
             //_repositoryManager.Student.CreateStudent(user);
             var result = await _userManager.CreateAsync(user, "11password");
-            //if (!result.Succeeded)
-            //{
-            //    foreach (var error in result.Errors)
-            //    {
-            //        ModelState.TryAddModelError(error.Code, error.Description);
-            //    }
-            //    return BadRequest(ModelState);
-            //}
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+                return BadRequest(ModelState);
+            }
             return StatusCode(201);
         }
 

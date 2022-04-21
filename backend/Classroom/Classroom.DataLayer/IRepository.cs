@@ -11,8 +11,8 @@ namespace Classroom.DataLayer
     public interface IRepository<T> //: IDisposable
         where T : class
     {
-        IEnumerable<T> GetAll();
-        T Get(Expression<Func<T, bool>> expression); 
+        IQueryable<T> GetAll();
+        IQueryable<T> Get(Expression<Func<T, bool>> expression); 
         void Create(T item);
         void Update(T item); 
         void Delete(T item); 

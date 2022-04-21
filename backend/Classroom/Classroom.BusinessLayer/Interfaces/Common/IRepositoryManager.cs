@@ -14,6 +14,7 @@ namespace Classroom.BusinessLayer.Interfaces.Common
         IStudentRepository Student { get;  }
         ITaskRepository Task { get;  }
         ITeacherRepository Teacher { get;  }
+        ISubjectRepository Subject { get;  }
 
     }
 }
