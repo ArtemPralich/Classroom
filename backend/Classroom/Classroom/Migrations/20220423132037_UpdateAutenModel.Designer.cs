@@ -4,14 +4,16 @@ using Classroom.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Classroom.Migrations
 {
     [DbContext(typeof(ClassroomContext))]
-    partial class ClassroomContextModelSnapshot : ModelSnapshot
+    [Migration("20220423132037_UpdateAutenModel")]
+    partial class UpdateAutenModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

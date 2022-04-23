@@ -12,8 +12,7 @@ namespace Classroom.Entities.Models
         {
             Attachments = new HashSet<Attachment>();
         }
-
-        public override string Id { get; set; }
+        
         public short? Age { get; set; }
         public int? GroupId { get; set; }
 

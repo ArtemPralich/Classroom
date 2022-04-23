@@ -45,7 +45,7 @@ namespace Classroom
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole),
                 builder.Services);
             builder.AddEntityFrameworkStores<ClassroomContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders().AddRoles<IdentityRole>();
             services.AddDbContext<ClassroomContext>(opts =>
                 opts.UseSqlServer(Configuration.GetConnectionString("sqlConnection"), b =>
                     b.MigrationsAssembly("Classroom")));

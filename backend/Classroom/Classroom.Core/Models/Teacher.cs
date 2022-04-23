@@ -12,8 +12,7 @@ namespace Classroom.Entities.Models
         {
             Subjects = new HashSet<Subject>();
         }
-
-        public override string Id { get; set; }
+        
         
         public short? Age { get; set; }
 

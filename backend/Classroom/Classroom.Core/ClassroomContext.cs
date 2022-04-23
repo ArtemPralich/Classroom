@@ -26,6 +26,7 @@ namespace Classroom.Entities
         public virtual DbSet<Teacher> Teachers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        
         {
             if (!optionsBuilder.IsConfigured)
             {
