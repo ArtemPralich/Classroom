@@ -5,6 +5,8 @@ using Classroom.Entities.Models.ModelsDto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Classroom.BusinessLayer.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Classroom.Controllers
 {
@@ -15,19 +17,29 @@ namespace Classroom.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IRepositoryManager _repositoryManager;
-        private readonly ClassroomContext _classroomContext;
+        private readonly IAuthenticationManage _authenticationManage;
 
-        public AuthenticationController(UserManager<User> userManager, IRepositoryManager repositoryManager, ClassroomContext classroomContext, RoleManager<IdentityRole> roleManager)
+        public AuthenticationController(UserManager<User> userManager, IRepositoryManager repositoryManager, 
+                                        RoleManager<IdentityRole> roleManager, IAuthenticationManage authenticationManage)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _repositoryManager = repositoryManager;
-            _classroomContext = classroomContext;
-
+            _authenticationManage = authenticationManage;
         }
 
+        [HttpPost("login")]
+        public async Task<IActionResult> Authenticate([FromBody] UserAuthenDto
+            user)
+        {
+            if (!await _authenticationManage.ValidateUser(user))
+            {
+                return Unauthorized();
+            }
+            return Ok(new { Token = await _authenticationManage.CreateToken() });
+        }
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Student")]
         //[ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> GetRoles(string role)
         {
