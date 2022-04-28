@@ -12,11 +12,14 @@ namespace Classroom.Entities.Models
         }
 
         public override int Id { get; set; }
+        public string Title { get; set; }
         public short? Mark { get; set; }
         public short? Progress { get; set; }
         public int SubjectId { get; set; }
+        public string StudentId { get; set; }
         public short? Type { get; set; }
 
+        public virtual Student Student { get; set; }
         public virtual Subject Subject { get; set; }
         public virtual ICollection<Attachment> Attachments { get; set; }
     }

@@ -9,5 +9,7 @@ namespace Classroom.Entities.Models.ModelsDto
     public class GroupDto
     {
 
+        public string Number { get; set; }
+        public short? Course { get; set; }
     }
 }

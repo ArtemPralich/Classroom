@@ -10,6 +10,7 @@ namespace Classroom.Entities.Models.ModelsDto
     {
         public string Title { get; set; }
         public string TeacherId { get; set; }
+        public int GroupId { get; set; }
         public short? Year { get; set; }
     }
 }

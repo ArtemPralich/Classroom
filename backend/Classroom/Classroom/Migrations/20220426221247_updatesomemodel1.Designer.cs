@@ -10,14 +10,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Classroom.Migrations
 {
     [DbContext(typeof(ClassroomContext))]
-    [Migration("20220419092136_DatabaseCreation1")]
-    partial class DatabaseCreation1
+    [Migration("20220426221247_updatesomemodel1")]
+    partial class updatesomemodel1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:Collation", "Cyrillic_General_CI_AS")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.16")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -30,28 +29,22 @@ namespace Classroom.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Path")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StudentId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("TaskId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StudentId");
-
                     b.HasIndex("TaskId");
 
-                    b.ToTable("Attachment");
+                    b.ToTable("Attachments");
                 });
 
             modelBuilder.Entity("Classroom.Entities.Models.Group", b =>
@@ -65,13 +58,11 @@ namespace Classroom.Migrations
                         .HasColumnType("smallint");
 
                     b.Property<string>("Number")
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Group");
+                    b.ToTable("Groups");
                 });
 
             modelBuilder.Entity("Classroom.Entities.Models.Subject", b =>
@@ -81,22 +72,25 @@ namespace Classroom.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
                     b.Property<string>("TeacherId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<short?>("Year")
                         .HasColumnType("smallint");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GroupId");
+
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Subject");
+                    b.ToTable("Subjects");
                 });
 
             modelBuilder.Entity("Classroom.Entities.Models.Task", b =>
@@ -112,17 +106,25 @@ namespace Classroom.Migrations
                     b.Property<short?>("Progress")
                         .HasColumnType("smallint");
 
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("SubjectId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<short?>("Type")
                         .HasColumnType("smallint");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("StudentId");
+
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("Task");
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("Classroom.Entities.Models.User", b =>
@@ -145,14 +147,10 @@ namespace Classroom.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Firstname")
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Lastname")
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -365,38 +363,43 @@ namespace Classroom.Migrations
 
             modelBuilder.Entity("Classroom.Entities.Models.Attachment", b =>
                 {
-                    b.HasOne("Classroom.Entities.Models.Student", "Student")
-                        .WithMany("Attachments")
-                        .HasForeignKey("StudentId")
-                        .HasConstraintName("fk_student_id");
-
                     b.HasOne("Classroom.Entities.Models.Task", "Task")
                         .WithMany("Attachments")
-                        .HasForeignKey("TaskId")
-                        .HasConstraintName("fk_task_id");
-
-                    b.Navigation("Student");
+                        .HasForeignKey("TaskId");
 
                     b.Navigation("Task");
                 });
 
             modelBuilder.Entity("Classroom.Entities.Models.Subject", b =>
                 {
+                    b.HasOne("Classroom.Entities.Models.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Classroom.Entities.Models.Teacher", "Teacher")
                         .WithMany("Subjects")
-                        .HasForeignKey("TeacherId")
-                        .HasConstraintName("fk_teacher_id");
+                        .HasForeignKey("TeacherId");
+
+                    b.Navigation("Group");
 
                     b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("Classroom.Entities.Models.Task", b =>
                 {
+                    b.HasOne("Classroom.Entities.Models.Student", "Student")
+                        .WithMany("Tasks")
+                        .HasForeignKey("StudentId");
+
                     b.HasOne("Classroom.Entities.Models.Subject", "Subject")
                         .WithMany("Tasks")
                         .HasForeignKey("SubjectId")
-                        .HasConstraintName("fk_subject_id")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Student");
 
                     b.Navigation("Subject");
                 });
@@ -465,8 +468,7 @@ namespace Classroom.Migrations
                 {
                     b.HasOne("Classroom.Entities.Models.Group", "Group")
                         .WithMany("Students")
-                        .HasForeignKey("GroupId")
-                        .HasConstraintName("fk_group_id");
+                        .HasForeignKey("GroupId");
 
                     b.HasOne("Classroom.Entities.Models.User", null)
                         .WithOne()
@@ -503,7 +505,7 @@ namespace Classroom.Migrations
 
             modelBuilder.Entity("Classroom.Entities.Models.Student", b =>
                 {
-                    b.Navigation("Attachments");
+                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("Classroom.Entities.Models.Teacher", b =>

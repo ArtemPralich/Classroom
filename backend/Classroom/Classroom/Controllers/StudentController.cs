@@ -22,11 +22,34 @@ namespace Classroom.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetStudents([FromQuery] StudentParameters studentParameters)
+        public IActionResult GetStudents()
         {
-            var students = _repositoryManager.Student.GetAllStudents(studentParameters);
+            
+            var students = _repositoryManager.Student.GetAllStudents(new StudentParameters());
 
             return Ok(students);
+        }
+        
+        [HttpGet("{groupId}", Name = "GetBySubject")]
+        public IActionResult GetBySubject(int groupId)
+        {
+
+            var students = _repositoryManager.Student.Get(s => s.GroupId == groupId);
+            return Ok(students);
+        }
+
+        [HttpPut]
+        public IActionResult Update(Student student)
+        {
+             _repositoryManager.Student.Update(student);
+             return Ok(student);
+        }
+        [HttpDelete("{id}")]
+        public IActionResult Update(string id)
+        {
+            var st = _repositoryManager.Student.Get(s => s.Id == id).FirstOrDefault();
+            _repositoryManager.Student.Delete(st);
+            return Ok();
         }
     }
 }

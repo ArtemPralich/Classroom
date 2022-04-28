@@ -17,5 +17,22 @@ namespace Classroom.Controllers
         {
             _repositoryManager = repositoryManager;
         }
+
+        [HttpGet]
+        public IActionResult GetTeacher()
+        {
+
+            var students = _repositoryManager.Teacher.GetAll();
+
+            return Ok(students);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Update(string id)
+        {
+            var st = _repositoryManager.Teacher.Get(s => s.Id == id).FirstOrDefault();
+            _repositoryManager.Teacher.Delete(st);
+            return Ok();
+        }
     }
 }

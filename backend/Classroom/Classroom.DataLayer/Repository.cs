@@ -33,6 +33,11 @@ namespace Classroom.DataLayer
             _context.Set<T>().Add(entity);
             Save();
         }
+        public void CreateRange(List<T> entity)
+        {
+            _context.Set<T>().AddRange(entity);
+            Save();
+        }
 
         public void Update(T entity)
         {

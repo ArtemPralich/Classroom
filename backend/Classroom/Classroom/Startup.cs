@@ -15,6 +15,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using Classroom.BusinessLayer.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 
 namespace Classroom
 {
@@ -30,6 +32,13 @@ namespace Classroom
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader().WithExposedHeaders("roles"));
+            });
             services.AddAuthentication();
 
             var jwtSettings = Configuration.GetSection("JwtSettings");
@@ -124,6 +133,8 @@ namespace Classroom
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            
 
             app.UseEndpoints(endpoints =>
             {

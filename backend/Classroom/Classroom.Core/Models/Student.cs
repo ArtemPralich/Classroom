@@ -10,13 +10,13 @@ namespace Classroom.Entities.Models
     {
         public Student()
         {
-            Attachments = new HashSet<Attachment>();
+            Tasks = new HashSet<Task>();
         }
         
         public short? Age { get; set; }
         public int? GroupId { get; set; }
 
         public virtual Group Group { get; set; }
-        public virtual ICollection<Attachment> Attachments { get; set; }
+        public virtual ICollection<Task> Tasks { get; set; }
     }
 }

@@ -13,28 +13,15 @@ namespace Classroom.Client.Helpers
         {
             _panelDto.Where(p => p.Name != namePanel).All(p =>
             {
-                p.PanelEntity.Height = 0;
+                p.PanelEntity.Visible = false;
                 return true;
             });
             _panelDto.Where(p => p.Name == namePanel).All(p =>
             {
-                p.PanelEntity.Height = 800;
+                p.PanelEntity.Visible = true;
                 return true;
             });
         }
-
-        public static void OpenPanelForSecretary(List<PanelDto> _panelDto, string namePanel)
-        {
-            _panelDto.Where(p => p.Name != namePanel).All(p =>
-            {
-                p.PanelEntity.Height = 0;
-                return true;
-            });
-            _panelDto.Where(p => p.Name == namePanel).All(p =>
-            {
-                p.PanelEntity.Height = 720;
-                return true;
-            });
-        }
+        
     }
 }

@@ -1,4 +1,7 @@
-﻿using Classroom.BusinessLayer.Interfaces.Common;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using Classroom.BusinessLayer.Interfaces.Common;
 using Classroom.Entities;
 using Classroom.Entities.Models;
 using Classroom.Entities.Models.ModelsDto;
@@ -7,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Classroom.BusinessLayer.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Classroom.Controllers
 {
@@ -36,7 +40,12 @@ namespace Classroom.Controllers
             {
                 return Unauthorized();
             }
-            return Ok(new { Token = await _authenticationManage.CreateToken() });
+
+            var currentUser = await _userManager.FindByNameAsync(user.Username);
+            var roles = await _userManager.GetRolesAsync(currentUser);
+
+
+            return Ok(new { Token = await _authenticationManage.CreateToken(), Role = roles[0], User = currentUser });
         }
 
         [HttpGet, Authorize(Roles = "Student")]
@@ -46,6 +55,7 @@ namespace Classroom.Controllers
             var isExists = await  _roleManager.RoleExistsAsync(role);
             return Ok(isExists);
         }
+        
 
         [HttpPost("CreateRoles")]
         public async Task<IActionResult> CreateRoles()
@@ -55,7 +65,7 @@ namespace Classroom.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("RegisterStudent")]
         //[ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterStudent([FromBody]StudentCreateDto studentDto)
         {
@@ -84,6 +94,66 @@ namespace Classroom.Controllers
             {
                 var savedUser = await _userManager.FindByNameAsync(user.UserName);
                 await _userManager.AddToRolesAsync(savedUser,  studentDto.Roles);
+            }
+            return StatusCode(201);
+        }
+        [HttpPost("RegisterTeacher")]
+
+        //[ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> RegisterTeacher([FromBody] StudentCreateDto studentDto)
+        {
+            var user = new Teacher()
+            {
+                UserName = studentDto.UserName,
+                Firstname = studentDto.Firstname,
+                Lastname = studentDto.Lastname,
+                Email = studentDto.Email,
+                PhoneNumber = studentDto.PhoneNumber,
+                Age = studentDto.Age,
+            };
+            //_repositoryManager.Student.CreateStudent(user);
+            var result = await _userManager.CreateAsync(user, studentDto.Password);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+                return BadRequest(ModelState);
+            }
+            else
+            {
+                var savedUser = await _userManager.FindByNameAsync(user.UserName);
+                await _userManager.AddToRolesAsync(savedUser, studentDto.Roles);
+            }
+            return StatusCode(201);
+        }
+        [HttpPost("RegisterSecretary")]
+        //[ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> RegisterSecretary([FromBody] StudentCreateDto studentDto)
+        {
+            var user = new Secretary()
+            {
+                UserName = studentDto.UserName,
+                Firstname = studentDto.Firstname,
+                Lastname = studentDto.Lastname,
+                Email = studentDto.Email,
+                PhoneNumber = studentDto.PhoneNumber
+            };
+            //_repositoryManager.Student.CreateStudent(user);
+            var result = await _userManager.CreateAsync(user, studentDto.Password);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+                return BadRequest(ModelState);
+            }
+            else
+            {
+                var savedUser = await _userManager.FindByNameAsync(user.UserName);
+                await _userManager.AddToRolesAsync(savedUser, studentDto.Roles);
             }
             return StatusCode(201);
         }

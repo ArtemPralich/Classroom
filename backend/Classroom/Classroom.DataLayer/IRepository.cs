@@ -14,6 +14,7 @@ namespace Classroom.DataLayer
         IQueryable<T> GetAll();
         IQueryable<T> Get(Expression<Func<T, bool>> expression); 
         void Create(T item);
+        void CreateRange(List<T> entity);
         void Update(T item); 
         void Delete(T item); 
         void Save(); 

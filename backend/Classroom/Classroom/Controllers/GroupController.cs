@@ -6,7 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Classroom.BusinessLayer.Interfaces.Common;
 using Classroom.Entities.Models;
+using Classroom.Entities.Models.ModelsDto;
 using Classroom.Entities.RequestFeatures;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace Classroom.Controllers
 {
@@ -19,30 +22,30 @@ namespace Classroom.Controllers
         {
             _repositoryManager = repositoryManager;
         }
-        //public PageList<Group> GetAllProducts(int kindId, ProductParameters productParameters, bool trackChange)
-        //{
-        //    var products = await ReturnDistinct(e => (e.KindId.Equals(kindId)), trackChange).Include(u => u.Shipper)
-        //        .FilterProduct(productParameters.MinPrice, productParameters.MaxPrice)
-        //        .Search(productParameters.SearchTerm).OrderBy(e => e.Name)
-        //        .Sort(productParameters.OrderBy).ToListAsync();
 
-        //    return PagedList<Product>.ToPagedList(products, productParameters.PageNumber,
-        //        productParameters.PageSize);
-        //}
-        //public async Task<Product> GetProductAsync(int kindId, int productId, bool trackChange) =>
-        //    await ReturnDistinct(c => c.ProductId.Equals(productId) && c.KindId.Equals(kindId), trackChange).SingleOrDefaultAsync();
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var groups = _repositoryManager.Group.GetAll();
+            return Ok(groups);
+        }
 
-        //public Product GetProduct(int kindId, int productId, bool trackChange) =>
-        //    ReturnDistinct(c => c.ProductId.Equals(productId) && c.KindId.Equals(kindId), trackChange).SingleOrDefault();
+        [HttpPost]
+        public async Task<IActionResult> Create(GroupDto group)
+        {
+            var g = new Group() {Course = group.Course, Number = group.Number};
+            _repositoryManager.Group.Create(g);
+            return Ok();
+        }
 
-        //public void CreateProduct(int kindId, Product product)
-        //{
-        //    product.KindId = kindId;
-        //    Create(product);
-        //}
-        //public void DeleteProduct(Product product)
-        //{
-        //    Delete(product);
-        //}
+        [HttpDelete("{id}"), Authorize(Roles = "Secretary")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var attach = _repositoryManager.Group.Get(a => a.Id == id).SingleOrDefault();
+
+            _repositoryManager.Group.Delete(attach);
+
+            return Ok();
+        }
     }
 }
